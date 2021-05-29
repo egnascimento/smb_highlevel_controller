@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sensor_msgs/PointCloud2.h>
 #include "geometry_msgs/Twist.h"
+#include "visualization_msgs/Marker.h"
 
 namespace smb_highlevel_controller {
 
@@ -20,16 +21,21 @@ private:
 	bool readParameters();
 	void scanCallback(const sensor_msgs::LaserScan::ConstPtr &msg);
 	void pointcloudCallback(const sensor_msgs::PointCloud2 &msg);
+	void publishMarker(int x, int y, int z);
 
 	ros::NodeHandle _nodeHandle;
 	ros::Subscriber _scanSubscriber;
+	ros::Subscriber _pclSubscriber;
+	ros::Publisher _cmd_velPublisher;
+	ros::Publisher _markerPublisher;
+
 	std::string _scanTopic;
 	std::string _cmd_velTopic;
+
+	float _pidP;
 	geometry_msgs::Twist _cmd_velMessage;
-	ros::Publisher _cmd_velPublisher;
 	int _subscriberQueueSize;
 
-	ros::Subscriber _pclSubscriber;
 };
 
 }  // namespace smb_highlevel_controller
